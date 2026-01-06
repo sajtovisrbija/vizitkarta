@@ -98,26 +98,25 @@ async function savePageAsImageOrPDF() {
     });
 
     // --- OPCIJA 1: PNG ---
-    const dataURL = canvas.toDataURL("image/png");
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    // const dataURL = canvas.toDataURL("image/png");
+    // const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-    if (isMobile) {
-        // Otvori u novoj kartici za mobilni
-        const win = window.open();
-        win.document.write('<img src="' + dataURL + '" style="width:100%">');
-    } else {
-        // Desktop: automatski download
-        const a = document.createElement("a");
-        a.href = dataURL;
-        a.download = "ZELJKO_SIMEUNOVIC_BIGZ011.png";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    }
+    // if (isMobile) {
+    //     // Otvori u novoj kartici za mobilni
+    //     const win = window.open();
+    //     win.document.write('<img src="' + dataURL + '" style="width:100%">');
+    // } else {
+    //     // Desktop: automatski download
+    //     const a = document.createElement("a");
+    //     a.href = dataURL;
+    //     a.download = "ZELJKO_SIMEUNOVIC_BIGZ011.png";
+    //     document.body.appendChild(a);
+    //     a.click();
+    //     document.body.removeChild(a);
+    // }
 
     // --- OPCIJA 2: PDF ---
     // Ako želiš PDF verziju, otkomentariši ovo
-    /*
     const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'px',
@@ -125,10 +124,11 @@ async function savePageAsImageOrPDF() {
     });
     pdf.addImage(dataURL, 'PNG', 0, 0, canvas.width, canvas.height);
     pdf.save("ZELJKO_SIMEUNOVIC_BIGZ011.pdf");
-    */
+    
 }
 </script>
     
 </body>
 </html>
+
 
