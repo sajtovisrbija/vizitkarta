@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ŽELJKO SIMEUNOVIĆ | BIGZ 011</title>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
 <style>
 html,body{margin:0;height:100%;overflow:hidden}
 body{
@@ -82,56 +80,11 @@ color:#000;
 <div class="address">📍 Bulevar Vojvode Mišića 17, 9. sprat</div>
 
 <div class="actions">
-<button class="btn" onclick="capture()">📸 Sačuvaj</button>
+    <a href="vizitka.png" download="ZELJKO_SIMEUNOVIC_BIGZ011.png">
+        <button class="btn">📸 Sačuvaj</button>
+    </a>
 </div>
 </div>
-
-
-<script>
-function capture() {
-  const card = document.getElementById("vizitka");
-  const body = document.body;
-
-  // 1. Zapamti originalni background
-  const originalBg = body.style.background;
-
-  // 2. Privremeno ukloni crni overlay
-  body.style.background =
-    'url("image.jpg") center / cover no-repeat';
-
-  // 3. Isključi animacije i opacity
-  card.querySelectorAll("*").forEach(el => {
-    el.style.animation = "none";
-    el.style.transition = "none";
-    el.style.opacity = "1";
-    el.style.transform = "none";
-  });
-
-  // 4. Screenshot
-  requestAnimationFrame(() => {
-    html2canvas(card, {
-      scale: 3,
-      backgroundColor: null,
-      useCORS: true
-    }).then(canvas => {
-      const a = document.createElement("a");
-      a.href = canvas.toDataURL("image/png");
-      a.download = "vizitka.png";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-
-      // 5. Vrati originalni background
-      body.style.background = originalBg;
-    });
-  });
-}
-</script>
-
-
 
 </body>
 </html>
-
-
-
