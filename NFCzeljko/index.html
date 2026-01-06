@@ -8,48 +8,29 @@
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
 <style>
-html, body {margin:0; height:100%; overflow:hidden; font-family:Arial,Helvetica,sans-serif;}
-body {display:flex; justify-content:center; align-items:center; color:#fff; background:#000;}
-
-#screenshot-wrapper {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+html,body{margin:0;height:100%;overflow:hidden}
+body{
+font-family:Arial,Helvetica,sans-serif;
+background:
+linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),
+url("image.jpg")
+center/cover no-repeat;
+display:flex;align-items:center;justify-content:center;color:#fff;
 }
-
-/* Pozadinska slika kao IMG */
-#screenshot-wrapper img.background {
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  z-index:-1;
-}
-
 .card{
-width:360px;
-padding:28px;
-text-align:center;
+width:360px;padding:28px;text-align:center;
 background:rgba(255,255,255,.12);
 backdrop-filter:blur(16px);
 border-radius:22px;
 box-shadow:0 25px 50px rgba(0,0,0,.6),
 inset 0 0 0 1px rgba(255,255,255,.15);
 animation:enter 1.8s ease forwards;
-transform:scale(.92);
-opacity:0;
+transform:scale(.92);opacity:0;
 }
 @keyframes enter{to{transform:scale(1);opacity:1}}
-
 .logo img{width:160px;margin-bottom:20px}
 .name{font-size:26px;font-weight:700;letter-spacing:1px}
 .role{font-size:14px;margin:18px 0 22px;opacity:.9}
-
 .item{
 opacity:0;transform:translateY(10px);
 animation:fadeUp 1.4s ease forwards;
@@ -58,14 +39,12 @@ animation:fadeUp 1.4s ease forwards;
 .item:nth-of-type(2){animation-delay:1.5s}
 .item:nth-of-type(3){animation-delay:1.8s}
 @keyframes fadeUp{to{opacity:1;transform:none}}
-
 .item a{
 display:block;margin:10px 0;padding:12px;
 border-radius:14px;
 background:rgba(255,255,255,.15);
 color:#f2c94c;text-decoration:none;font-size:16px;
 }
-
 .address{font-size:14px;opacity:.85;margin-top:16px}
 .actions{
 margin-top:18px;
@@ -74,14 +53,10 @@ animation:fadeActions 1.6s ease forwards;
 animation-delay:2.2s;
 }
 @keyframes fadeActions{to{opacity:1}}
-
 .btn{
-width:100%;
-padding:14px;
-border-radius:16px;
-border:none;
-font-size:16px;
-font-weight:600;
+width:100%;padding:14px;
+border-radius:16px;border:none;
+font-size:16px;font-weight:600;
 cursor:pointer;
 background:rgba(242,201,76,.9);
 color:#000;
@@ -90,71 +65,34 @@ color:#000;
 </head>
 
 <body>
+<div class="card" id="vizitka">
+<div class="logo">
+<img src="logo.svg">
+</div>
 
-<div id="screenshot-wrapper">
-  <!-- Pozadinska slika -->
-  <img class="background" src="image.jpg" alt="Pozadina">
+<div class="name">ŽELJKO SIMEUNOVIĆ</div>
+<div class="role">Generalni Menadžer<br>BIGZ 011 Beograd</div>
 
-  <!-- Tvoja kartica -->
-  <div class="card" id="vizitka">
-    <div class="logo">
-      <img src="logo.png" alt="Logo">
-    </div>
+<div class="item"><a href="tel:+381604745434">📞 +381 60 4745 434</a></div>
+<div class="item"><a href="mailto:direktor@bigz011.com">📧 direktor@bigz011.com</a></div>
+<div class="item"><a href="https://www.bigz011.com">🌐 www.bigz011.com</a></div>
 
-    <div class="name">ŽELJKO SIMEUNOVIĆ</div>
-    <div class="role">Generalni Menadžer<br>BIGZ 011 Beograd</div>
+<div class="address">📍 Bulevar Vojvode Mišića 17, 9. sprat</div>
 
-    <div class="item"><a href="tel:+381604745434">📞 +381 60 4745 434</a></div>
-    <div class="item"><a href="mailto:direktor@bigz011.com">📧 direktor@bigz011.com</a></div>
-    <div class="item"><a href="https://www.bigz011.com">🌐 www.bigz011.com</a></div>
-
-    <div class="address">📍 Bulevar Vojvode Mišića 17, 9. sprat</div>
-
-    <div class="actions">
-      <button class="btn" onclick="savePageAsImage()">📸 Sačuvaj</button>
-    </div>
-  </div>
+<div class="actions">
+<button class="btn" onclick="saveAsImage()">📸 Sačuvaj</button>
+</div>
 </div>
 
 <script>
-async function savePageAsImage() {
-    const wrapper = document.getElementById("screenshot-wrapper");
-
-    // Sačekaj sve animacije
-    const animations = wrapper.getAnimations();
-    await Promise.all(animations.map(a => a.finished));
-
-    // Onemogući animacije za screenshot
-    wrapper.style.animation = "none";
-    wrapper.querySelectorAll("*").forEach(el => el.style.animation = "none");
-
-    // html2canvas
-    const canvas = await html2canvas(wrapper, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: null
-    });
-
-    const dataURL = canvas.toDataURL("image/png");
-
-    // Detekcija mobilnog uređaja
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-    if(isMobile){
-        // Na telefonu otvori u novoj kartici
-        const win = window.open();
-        win.document.write('<img src="' + dataURL + '" style="width:100%">');
-    } else {
-        // Desktop: automatski download
-        const a = document.createElement("a");
-        a.href = dataURL;
-        a.download = "ZELJKO_SIMEUNOVIC_BIGZ011.png";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    }
+function saveAsImage(){
+html2canvas(document.getElementById("vizitka")).then(canvas=>{
+const link=document.createElement("a");
+link.download="ZELJKO_SIMEUNOVIC_BIGZ011.png";
+link.href=canvas.toDataURL("image/png");
+link.click();
+});
 }
 </script>
-
 </body>
 </html>
