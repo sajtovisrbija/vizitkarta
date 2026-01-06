@@ -86,24 +86,32 @@ color:#000;
 </div>
 </div>
 
+
 <script>
 function capture() {
   const card = document.getElementById("vizitka");
+  const body = document.body;
 
-  // 1. Privremeno ugasi animacije i opacity
-  const animated = card.querySelectorAll("*");
-  animated.forEach(el => {
+  // 1. Zapamti originalni background
+  const originalBg = body.style.background;
+
+  // 2. Privremeno ukloni crni overlay
+  body.style.background =
+    'url("image.jpg") center / cover no-repeat';
+
+  // 3. Isključi animacije i opacity
+  card.querySelectorAll("*").forEach(el => {
     el.style.animation = "none";
     el.style.transition = "none";
     el.style.opacity = "1";
     el.style.transform = "none";
   });
 
-  // 2. Sačekaj 1 frame da browser primeni stilove
+  // 4. Screenshot
   requestAnimationFrame(() => {
     html2canvas(card, {
       scale: 3,
-      backgroundColor: "#000",
+      backgroundColor: null,
       useCORS: true
     }).then(canvas => {
       const a = document.createElement("a");
@@ -112,13 +120,18 @@ function capture() {
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
+
+      // 5. Vrati originalni background
+      body.style.background = originalBg;
     });
   });
 }
 </script>
 
 
+
 </body>
 </html>
+
 
 
