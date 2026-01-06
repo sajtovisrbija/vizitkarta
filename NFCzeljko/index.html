@@ -80,19 +80,29 @@ color:#000;
 <div class="address">📍 Bulevar Vojvode Mišića 17, 9. sprat</div>
 
 <div class="actions">
-<button class="btn" onclick="saveAsImage()">📸 Sačuvaj</button>
+<button class="btn" onclick="savePageAsImage()">📸 Sačuvaj</button>
 </div>
 </div>
 
 <script>
-function saveAsImage(){
-html2canvas(document.getElementById("vizitka")).then(canvas=>{
-const link=document.createElement("a");
-link.download="ZELJKO_SIMEUNOVIC_BIGZ011.png";
-link.href=canvas.toDataURL("image/png");
-link.click();
-});
-}
+    function savePageAsImage(){
+      html2canvas(document.body, {
+        scale: 2,
+        useCORS: true,
+        windowWidth: document.documentElement.scrollWidth,
+        windowHeight: document.documentElement.scrollHeight
+      }).then(canvas => {
+    
+        const a = document.createElement("a");
+        a.href = canvas.toDataURL("image/png");
+        a.download = "ZELJKO_SIMEUNOVIC_BIGZ011.png";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    
+      });
+    }
 </script>
+    
 </body>
 </html>
