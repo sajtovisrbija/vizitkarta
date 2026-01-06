@@ -90,21 +90,35 @@ color:#000;
 function capture() {
   const card = document.getElementById("vizitka");
 
-  html2canvas(card, {
-    scale: 3,
-    backgroundColor: "#000", // da ne bude transparentno
-    useCORS: true
-  }).then(canvas => {
-    const a = document.createElement("a");
-    a.href = canvas.toDataURL("image/png");
-    a.download = "vizitka.png";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+  // 1. Privremeno ugasi animacije i opacity
+  const animated = card.querySelectorAll("*");
+  animated.forEach(el => {
+    el.style.animation = "none";
+    el.style.transition = "none";
+    el.style.opacity = "1";
+    el.style.transform = "none";
+  });
+
+  // 2. Sačekaj 1 frame da browser primeni stilove
+  requestAnimationFrame(() => {
+    html2canvas(card, {
+      scale: 3,
+      backgroundColor: "#000",
+      useCORS: true
+    }).then(canvas => {
+      const a = document.createElement("a");
+      a.href = canvas.toDataURL("image/png");
+      a.download = "vizitka.png";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
   });
 }
 </script>
 
+
 </body>
 </html>
+
 
