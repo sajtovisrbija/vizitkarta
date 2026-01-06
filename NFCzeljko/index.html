@@ -80,29 +80,55 @@ color:#000;
 <div class="address">📍 Bulevar Vojvode Mišića 17, 9. sprat</div>
 
 <div class="actions">
-<button class="btn" onclick="savePageAsImage()">📸 Sačuvaj</button>
+<button class="btn" onclick="savePageAsImageOrPDF()">📸 Sačuvaj</button>
 </div>
 </div>
 
 <script>
-    function savePageAsImage(){
-      html2canvas(document.body, {
+async function savePageAsImageOrPDF() {
+    const { jsPDF } = window.jspdf;
+
+    const card = document.getElementById("vizitka");
+
+    // Napravi canvas
+    const canvas = await html2canvas(card, {
         scale: 2,
         useCORS: true,
-        windowWidth: document.documentElement.scrollWidth,
-        windowHeight: document.documentElement.scrollHeight
-      }).then(canvas => {
-    
+        backgroundColor: null
+    });
+
+    // --- OPCIJA 1: PNG ---
+    const dataURL = canvas.toDataURL("image/png");
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (isMobile) {
+        // Otvori u novoj kartici za mobilni
+        const win = window.open();
+        win.document.write('<img src="' + dataURL + '" style="width:100%">');
+    } else {
+        // Desktop: automatski download
         const a = document.createElement("a");
-        a.href = canvas.toDataURL("image/png");
+        a.href = dataURL;
         a.download = "ZELJKO_SIMEUNOVIC_BIGZ011.png";
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-    
-      });
     }
+
+    // --- OPCIJA 2: PDF ---
+    // Ako želiš PDF verziju, otkomentariši ovo
+    /*
+    const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'px',
+        format: [canvas.width, canvas.height]
+    });
+    pdf.addImage(dataURL, 'PNG', 0, 0, canvas.width, canvas.height);
+    pdf.save("ZELJKO_SIMEUNOVIC_BIGZ011.pdf");
+    */
+}
 </script>
     
 </body>
 </html>
+
